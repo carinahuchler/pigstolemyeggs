@@ -1169,11 +1169,24 @@ public class Vision {
 	{
 		if(o1.getX()>o2.getX())
 		{
-
-					if((o2.getHeight()+o2.getY())<(o1.getY()+o1.getHeight()))
-					{
-						return false;
-					}
+			if(o2.getY()<o1.getY())
+			{
+				if(o2.getY()+o2.getHeight()<(o1.getY()+o1.getHeight()))
+				{
+					return false;
+				}
+			}
+			else if(o2.getY()<(o1.getY()+o1.getHeight()))
+			{
+				if ((o2.getY()+o2.getHeight())>(o1.getY()+o1.getHeight()))
+				{
+					return false;
+				}
+			}
+			else if(o2.getY()==o1.getY())
+			{
+			return false;
+			}
 		}
 		return true;
 	}
@@ -1181,10 +1194,24 @@ public class Vision {
 	{
 		if(o1.getY()>o2.getY())
 		{
-			if((o2.getWidth()+o2.getX())<(o1.getX()+o1.getWidth()))
+			if(o2.getX()<o1.getX())
+			{
+				if(o2.getX()+o2.getWidth()<(o1.getX()+o1.getWidth()))
 				{
 					return false;
 				}
+			}
+			else if(o2.getX()<(o1.getX()+o1.getWidth()))
+			{
+				if ((o2.getX()+o2.getWidth())>(o1.getX()+o1.getWidth()))
+				{
+					return false;
+				}
+			}
+			else if(o2.getX()==o1.getX())
+			{
+			return false;
+			}
 		}
 		return true;
 	}
