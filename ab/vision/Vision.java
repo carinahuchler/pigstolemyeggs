@@ -1112,5 +1112,81 @@ public class Vision {
 		// find bounding boxes and segment colours
 		_boxes = VisionUtils.findBoundingBoxes(_segments);
 	}
+	public List<Rectangle> getHitableIce()
+	{
+		return getHitableObjects(findWood());
+	}
+	public List<Rectangle> getHitableWood()
+	{
+		return getHitableObjects(findIce());
+	}
+	public List<Rectangle> getHitableStone()
+	{
+		return getHitableObjects(findStones());
+	}
+	
+	private List<Rectangle> getHitable(List<Rectangle>objects1,List<Rectangle> objects2)
+	{
+		List<Rectangle> hitable=new ArrayList<Rectangle>();
+		for(Rectangle o1:objects1)
+		{
+			boolean addLeft=true;
+			boolean addHigh=true;
+			for(Rectangle o2:objects2)
+			{
+				if(o2!=o1)
+				{
+				if(!isObjectMoreLeft(o1, o2))
+				{
+					addLeft=false;
+				}
+				if(!isObjectHigher(o1, o2))
+				{
+					addHigh=false;
+				}
+				}
+			}
+			if(addLeft==true||addHigh==true)
+			{
+			hitable.add(o1);
+			}
+			}
+		return hitable;
+	}
+	private List<Rectangle> getHitableObjects(List<Rectangle> objects)
+	{
+		List<Rectangle> wood=findWood();
+		List<Rectangle> ice=findIce();
+		List<Rectangle> stone=findStones();
+		List<Rectangle> surfaceObjects1=getHitable(objects, wood);
+		List<Rectangle> surfaceObjects2=getHitable(surfaceObjects1, stone);
+		surfaceObjects1=new ArrayList<Rectangle>();
+		surfaceObjects1=getHitable(surfaceObjects2,ice);
+		return surfaceObjects1;
+	}
+
+	public boolean isObjectMoreLeft(Rectangle o1, Rectangle o2)
+	{
+		if(o1.getX()>o2.getX())
+		{
+
+					if((o2.getHeight()+o2.getY())<(o1.getY()+o1.getHeight()))
+					{
+						return false;
+					}
+		}
+		return true;
+	}
+	public boolean isObjectHigher(Rectangle o1, Rectangle o2)
+	{
+		if(o1.getY()>o2.getY())
+		{
+			if((o2.getWidth()+o2.getX())<(o1.getX()+o1.getWidth()))
+				{
+					return false;
+				}
+		}
+		return true;
+	}
 
 }
