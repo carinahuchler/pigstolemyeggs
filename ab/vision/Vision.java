@@ -10,6 +10,7 @@
 
 package ab.vision;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -34,9 +35,11 @@ public class Vision {
 	private int _colours[]; // colour for each segment
 	private Rectangle _boxes[]; // bounding box for each segment
 	private int _regionThreshold = 10; // minimal pixels in a region
+	private BufferedImage screenshot;
 
 	// create a vision object for processing a given screenshot
 	public Vision(BufferedImage screenshot) {
+		this.screenshot=screenshot;
 		processScreenShot(screenshot);
 	}
 
@@ -1245,6 +1248,36 @@ public class Vision {
 		}else if (findActiveBird(findBlackBirds(),"black")!="")
 		{
 			return "black";
+		}else
+		{
+			Rectangle slingshot=findSlingshot();
+			for(int i=(int) slingshot.getX();i<=(slingshot.getX()+slingshot.width);i++)
+			{
+				for(int j=(int) slingshot.getY();j<=(slingshot.getY()+slingshot.height);j++)
+				{
+					Color bird=new Color(screenshot.getRGB(i, j));
+					if((bird.getRed()==99)&&(bird.getGreen()==170)&&(bird.getBlue()==197))
+					{
+						return "blue";
+					}
+					else if ((bird.getRed()==241)&&(bird.getGreen()==219)&&(bird.getBlue()==32))
+					{
+						return "yellow";
+					}
+					else if ((bird.getRed()==236)&&(bird.getGreen()==233)&&(bird.getBlue()==203))
+					{
+						return "white";
+					}
+					else if ((bird.getRed()==67)&&(bird.getGreen()==67)&&(bird.getBlue()==67))
+					{
+						return "black";
+					}
+					else if((bird.getRed()==214)&&(bird.getGreen()==0)&&(bird.getBlue()==45))
+					{
+						return "red";
+					}
+				}
+			}
 		}
 		return "";
 	}
